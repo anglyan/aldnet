@@ -23,6 +23,7 @@ at the 2024 International Conference in Atomic Layer Deposition.</p>
 </form>
 <script>
 function run(){
+	reset_output();
 	var selected_author = document.getElementsByName("researchername")[0].value;
 	var in_set = selected_author in author_dict;
 	if (in_set) {
@@ -33,24 +34,42 @@ function run(){
 	}
     document.getElementById("is_indataset").textContent = in_set_text;
     if (in_set) {
-    	if (author_dict[selected_author]==0) {
-    		var in_giant_component_text = "The author is part of the giant component";
+    	var cluster = author_dict[selected_author][0];
+    	var distance = author_dict[selected_author][1];
+    	if (cluster==0) {
+    		var in_giant_component_text = "The author is part of the giant component.";
     	}
     	else {
-    		var in_giant_component_text = "The author is not part of the giant component";
+    		var in_giant_component_text = "The author is not part of the giant component.";
     	}
-    document.getElementById("in_giantcomponent").textContent = in_giant_component_text;    	
+    	document.getElementById("in_giantcomponent").textContent = in_giant_component_text;
+    	if (Number(distance) < 0){
+    		var coll_test = "There is not a direct collaboration between the author and \
+    			the ALD 2024 Conference Chairs in our dataset.";
+    	}
+    	else {
+    		var coll_test = "The author is " + distance + " steps removed from the ALD 2024 \
+    			Conference Chairs.";
+    	}
+    	
+    	document.getElementById("collaboration").textContent = coll_test;
+    	    	
     }
     return false;
 }
 
 function reset_content(){
-	document.getElementById("is_indataset").textContent ="";
-	document.getElementById("in_giantcomponent").textContent = "";
 	document.getElementsByName("researchername")[0].value = "";
+	reset_output();
 	return false;
 }    	
 
+function reset_output(){
+	document.getElementById("in_giantcomponent").textContent = "";
+	document.getElementById("is_indataset").textContent ="";
+	document.getElementById("collaboration").textContent ="";
+	return false;
+}
 </script>
 
 <h2>Output</h2>
@@ -58,6 +77,8 @@ function reset_content(){
 <p id="is_indataset"></p>
 
 <p id="in_giantcomponent"></p>
+
+<p id="collaboration"></p>
 
 </body>
 </html>
