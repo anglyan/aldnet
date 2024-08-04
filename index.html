@@ -25,7 +25,8 @@ at the 2024 International Conference in Atomic Layer Deposition.</p>
 function run(){
 	reset_output();
 	var selected_author = document.getElementsByName("researchername")[0].value;
-	var in_set = selected_author in author_dict;
+	var input_key = selected_author.toUpperCase();
+	var in_set = input_key in author_dict;
 	if (in_set) {
 		var in_set_text = "The author " + selected_author + " is part of the ALD dataset.";
 	}
@@ -34,8 +35,8 @@ function run(){
 	}
     document.getElementById("is_indataset").textContent = in_set_text;
     if (in_set) {
-    	var cluster = author_dict[selected_author][0];
-    	var distance = author_dict[selected_author][1];
+    	var cluster = author_dict[input_key][0];
+    	var distance = author_dict[input_key][1];
     	if (cluster==0) {
     		var in_giant_component_text = "The author is part of the giant component.";
     	}
